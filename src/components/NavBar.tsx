@@ -1,27 +1,146 @@
 "use client";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useSession } from "@/app/(root)/SessionProvider";
-import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 const NavBar = () => {
-  const session = useSession();
-  console.log(session);
+  const { user } = useSession();
+
+  const initials = getInitials(user.displayName!);
+
   return (
-    <header className="sticky top-0 z-10">
-      <nav className="flex items-center justify-between border-b p-4">
-        <Image src="/assets/pulse.svg" alt="Logo" width={40} height={40} />
-        <ul className="flex gap-4">
+    <header className="h-screen w-1/4 overflow-auto">
+      <nav className="flex flex-col items-center justify-between border-r p-8">
+        {/* <Image src="/assets/pulse.svg" alt="Logo" width={40} height={40} /> */}
+        <div className="flex flex-col p-2">
+          {/* <UserDropDown user={user.displayName || ""} /> */}
+          <Avatar className="mx-auto size-20">
+            <AvatarImage src="https://github.com/sdshadcn.png" alt="@shadcn" />
+            <AvatarFallback className="uppercase text-2xl font-medium">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <h2 className="mx-auto text-2xl font-bold capitalize">
+            {user.displayName}
+          </h2>
+          <p className="mx-auto">@{user.username}</p>
+          <p className="text-sm">
+            Guiding the next generation through the journey of health and
+            knowledge!
+          </p>
+          <div className="flex items-center justify-around">
+            <span className="">
+              <p className="block text-center font-semibold">368</p>
+              <span className="text-sm">Post</span>
+            </span>
+            <span>
+              <p className="block text-center font-semibold">284.3K</p>
+              <span className="text-sm">Followers</span>
+            </span>
+            <span>
+              <p className="block text-center font-semibold">1.02M</p>
+              <span className="text-sm">Following</span>
+            </span>
+          </div>
+        </div>
+        <hr className="h-1 w-full bg-foreground" />
+        <ul className="mr-auto flex w-full flex-col space-y-2 py-6">
           <li>
-            <Link href="/">Home</Link>
+            <Button
+              className="h-12 w-full justify-start bg-transparent text-accent-foreground hover:text-primary-foreground"
+              asChild
+            >
+              <Link href="/" className="flex gap-3">
+                <HomeIcon className="h-6 w-6" />
+                Home
+              </Link>
+            </Button>
           </li>
           <li>
-            <Link href="#">About</Link>
+            <Button
+              className="h-12 w-full justify-start bg-transparent text-accent-foreground hover:text-primary-foreground"
+              asChild
+            >
+              <Link href="/" className="flex gap-3">
+                <MessageSquare className="h-6 w-6" />
+                Message
+              </Link>
+            </Button>
           </li>
           <li>
-            <Link href="#">Contact</Link>
+            <Button
+              className="h-12 w-full justify-start bg-transparent text-accent-foreground hover:text-primary-foreground"
+              asChild
+            >
+              <Link href="/" className="flex items-center gap-3">
+                <Bell className="h-6 w-6" />
+                <span>Notifications</span>
+                <span className="ml-auto inline-block rounded-full bg-red-500 px-2 py-1 text-xs text-white">
+                  13
+                </span>
+              </Link>
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              className="h-12 w-full justify-start bg-transparent text-accent-foreground hover:text-primary-foreground"
+              asChild
+            >
+              <Link href="/" className="flex gap-3">
+                <Settings className="h-6 w-6" />
+                Settings
+              </Link>
+            </Button>
           </li>
         </ul>
-        <UserDropDown user={"Mark"} />
+        <hr className="h-1 w-full bg-foreground" />
+        <div className="mb-4 flex w-full items-center justify-between">
+          <h3 className="text-xl font-semibold">Contacts</h3>
+          <p className="text-sm">View all</p>
+        </div>
+
+        {/* Contacts section */}
+        <div className="flex w-full flex-col justify-start gap-4">
+          <div className="flex w-full items-center gap-4">
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarFallback>JM</AvatarFallback>
+            </Avatar>
+            <span>
+              <h4 className="text-md font-semibold">Jack Monero</h4>
+              <p className="text-xs">Liked your story</p>
+            </span>
+          </div>
+          <div className="flex w-full items-center gap-4">
+            <Avatar>
+              <AvatarImage src="" alt="@shadcn" />
+              <AvatarFallback>CD</AvatarFallback>
+            </Avatar>
+            <span>
+              <h4 className="text-md font-semibold">Chris Dinner</h4>
+              <p className="text-xs">Liked your story</p>
+            </span>
+          </div>
+          <div className="flex w-full items-center gap-4">
+            <Avatar>
+              <AvatarImage src="" alt="@shadcn" />
+              <AvatarFallback>MS</AvatarFallback>
+            </Avatar>
+            <span>
+              <h4 className="text-md font-semibold">Martin Stilke</h4>
+              <p className="text-xs">Liked your story</p>
+            </span>
+          </div>
+          <div className="flex w-full items-center gap-4">
+            <Avatar>
+              <AvatarImage src="" alt="@shadcn" />
+              <AvatarFallback>RH</AvatarFallback>
+            </Avatar>
+            <span>
+              <h4 className="text-md font-semibold">Rick Hart</h4>
+              <p className="text-xs">Liked your story</p>
+            </span>
+          </div>
+        </div>
       </nav>
     </header>
   );
@@ -29,7 +148,8 @@ const NavBar = () => {
 export default NavBar;
 
 import {
-  CreditCard,
+  Bell,
+  HomeIcon,
   LifeBuoy,
   LogOut,
   Mail,
@@ -38,9 +158,11 @@ import {
   PlusCircle,
   Settings,
   User,
-  UserPlus,
 } from "lucide-react";
 
+import { logout } from "@/app/(auth)/actions";
+
+import { useSession } from "@/app/(root)/SessionProvider";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -55,7 +177,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logout } from "@/app/(auth)/actions";
+import { getInitials } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
 export function UserDropDown({ user }: { user: string }) {
@@ -64,6 +186,7 @@ export function UserDropDown({ user }: { user: string }) {
   const handleLogout = async () => {
     logout();
   };
+  const initials = getInitials(user);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,7 +196,7 @@ export function UserDropDown({ user }: { user: string }) {
         >
           <Avatar>
             <AvatarFallback className="font-medium uppercase">
-              {user.substring(0, 2)}
+              {initials}
             </AvatarFallback>
           </Avatar>
         </Button>

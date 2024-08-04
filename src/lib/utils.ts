@@ -7,6 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 export const requiredString = z.string().min(1, "required");
 
+export const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+};
+
 export const authFormSchema = (type: "signin" | "signup") =>
   z.object({
     username: requiredString.regex(
@@ -24,3 +31,7 @@ export const authFormSchema = (type: "signin" | "signup") =>
       "Password must be at least 8 characters long",
     ),
   });
+
+export const createPostSchema = z.object({
+  content: requiredString,
+});

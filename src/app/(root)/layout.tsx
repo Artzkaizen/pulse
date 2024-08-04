@@ -2,6 +2,7 @@ import { validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SessionProvider from "./SessionProvider";
 import NavBar from "@/components/NavBar";
+import RightSideBar from "@/components/RightSideBar";
 
 export default async function RootLayout({
   children,
@@ -11,13 +12,14 @@ export default async function RootLayout({
   const session = await validateRequest();
   if (!session.user) redirect("/signin");
   return (
-    <section>
+    <main>
       <SessionProvider value={session}>
-        <div>
+        <div className="flex">
           <NavBar />
           {children}
+          <RightSideBar />
         </div>
       </SessionProvider>
-    </section>
+    </main>
   );
 }

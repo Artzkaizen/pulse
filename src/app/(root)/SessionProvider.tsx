@@ -1,5 +1,6 @@
 "use client";
-import { Session, User } from "lucia";
+import { User } from "@/db/schema";
+import { Session } from "lucia";
 import { createContext, useContext } from "react";
 
 export interface SessionContext {
