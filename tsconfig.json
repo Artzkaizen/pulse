@@ -27,7 +27,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["lucia"]
   },
   "include": [
     ".eslintrc.cjs",

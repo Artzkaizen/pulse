@@ -46,6 +46,16 @@ export const signUp = async (
       password: passwordHash,
       displayName: username,
     });
+
+    const createdUser = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+
+    if (!createdUser) {
+      console.error("User creation failed");
+      return { error: "User creation failed" };
+    }
+    console.log(createdUser);
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(

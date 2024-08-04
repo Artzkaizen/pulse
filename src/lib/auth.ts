@@ -12,11 +12,7 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes(userAttributes) {
     return {
-      id: userAttributes.id,
-      displayName: userAttributes.display_name,
-      avatar: userAttributes.avatar_url,
-      google_id: userAttributes.google_id,
-      username: userAttributes.username,
+      ...userAttributes,
     };
   },
 });
@@ -31,9 +27,9 @@ declare module "lucia" {
 interface UserAttributes {
   id: string;
   username: string;
-  display_name: string;
-  avatar_url: string | null;
-  google_id: string | null;
+  displayName: string;
+  avatarUrl: string | null;
+  googleId: string | null;
 }
 
 export const validateRequest = cache(

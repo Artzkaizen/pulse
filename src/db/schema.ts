@@ -13,19 +13,17 @@ export const users = pgTable("pulse_users", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Define the `sessions` table with a foreign key relationship to `users`
 export const sessions = pgTable("pulse_sessions", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id), // Establishes the foreign key relationship
+    .references(() => users.id),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
 });
 
-// You can optionally use `foreignKey` if you need to specify additional constraints
 export const sessionForeignKeys = {
   userId: foreignKey({ columns: [users.id], foreignColumns: [users.id] }),
 };

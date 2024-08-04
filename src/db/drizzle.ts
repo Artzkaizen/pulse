@@ -13,15 +13,3 @@ const db = drizzle(pool, { schema });
 
 const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessions, schema.users);
 export { db, adapter };
-
-export async function testConnection() {
-  try {
-    const client = await pool.connect();
-    console.log("Connected to the database!");
-    client.release();
-  } catch (err) {
-    console.error("Error connecting to the database:", err);
-  }
-}
-
-// testConnection();
