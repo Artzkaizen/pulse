@@ -1,16 +1,16 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { lucia } from "@/lib/auth";
 import { users } from "@/db/schema";
+import { lucia } from "@/lib/auth";
+import { authFormSchema } from "@/lib/utils";
 import { hash } from "@node-rs/argon2";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { z } from "zod";
-import { authFormSchema } from "@/lib/utils";
-import { eq } from "drizzle-orm";
 const formSchema = authFormSchema("signup");
 
 export const signUp = async (
@@ -55,7 +55,6 @@ export const signUp = async (
       console.error("User creation failed");
       return { error: "User creation failed" };
     }
-    console.log(createdUser);
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(

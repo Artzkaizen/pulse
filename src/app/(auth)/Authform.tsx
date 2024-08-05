@@ -1,17 +1,17 @@
 "use client";
-import { z } from "zod";
 import { useState, useTransition } from "react";
+import { z } from "zod";
 
-import { Loader2, EyeIcon, EyeOffIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CustomFormField from "@/components/CustomFormField";
-import { signUp } from "@/app/(auth)/signup/actions";
-import { authFormSchema } from "@/lib/utils";
 import { login } from "@/app/(auth)/signin/actions";
+import { signUp } from "@/app/(auth)/signup/actions";
+import CustomFormField from "@/components/CustomFormField";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { authFormSchema } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 export const requiredString = z.string().min(1, "Required");
 
@@ -48,7 +48,6 @@ const AuthForm = ({ type }: { type: "signin" | "signup" }) => {
         setIsLoading(false);
       }
     });
-    console.log(values);
     setIsLoading(false);
   };
 

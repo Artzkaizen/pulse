@@ -1,9 +1,13 @@
-import { Search, Mic, Edit, MessageCircle, UserRoundPlus } from "lucide-react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import SuggestAccounts from "@/app/(root)/SuggestAccount";
+import { Edit, MessageCircle, Mic, Search } from "lucide-react";
+import { Suspense } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-const RightSideBar = () => {
+import { LoadingSkeleton } from "./LoadingSekleton";
+
+function RightSideBar() {
   return (
     <aside className="w-1/4 border-l-2">
       <div className="flex flex-col gap-4 p-6">
@@ -11,7 +15,7 @@ const RightSideBar = () => {
           <h3 className="text-xl font-semibold">Message</h3>
           <Edit size={18} />
         </div>
-        <div className="flex items-center justify-center rounded-lg border px-2 ring-2 ring-secondary focus-within:bg-primary-foreground focus-within:ring-primary">
+        <div className="flex items-center justify-center rounded-lg border px-2 ring-2 ring-secondary focus-within:bg-transparent focus-within:ring-primary">
           <Search />
           <Input
             placeholder="Search..."
@@ -101,80 +105,19 @@ const RightSideBar = () => {
       </div>
 
       <hr className="h-1 w-full bg-foreground" />
-
       <div className="flex flex-col gap-4 px-6 py-2">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Suggestion</h3>
           <p className="text-sm">View all</p>
         </div>
-        <div className="flex items-center justify-between">
-          <div className="inline-flex gap-3">
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.pwsdng"
-                alt="@shadcn"
-              />
-              <AvatarFallback>JM</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm">Joh Martins</p>
-              <p className="text-sm">Memphis, TN, US</p>
-            </div>
-          </div>
-          <UserRoundPlus />
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="inline-flex gap-3">
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.pwsdng"
-                alt="@shadcn"
-              />
-              <AvatarFallback>JM</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm">Joh Martins</p>
-              <p className="text-sm">Memphis, TN, US</p>
-            </div>
-          </div>
-          <UserRoundPlus />
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="inline-flex gap-3">
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.pwsdng"
-                alt="@shadcn"
-              />
-              <AvatarFallback>JM</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm">Joh Martins</p>
-              <p className="text-sm">Memphis, TN, US</p>
-            </div>
-          </div>
-          <UserRoundPlus />
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="inline-flex gap-3">
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.pwsdng"
-                alt="@shadcn"
-              />
-              <AvatarFallback>JM</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm">Joh Martins</p>
-              <p className="text-sm">Memphis, TN, US</p>
-            </div>
-          </div>
-          <UserRoundPlus />
-        </div>
+        <Suspense fallback={<LoadingSkeleton />}>
+          <SuggestAccounts />
+        </Suspense>
       </div>
+
       {/* <footer>This is the footer in aside</footer> */}
     </aside>
   );
-};
+}
 
 export default RightSideBar;

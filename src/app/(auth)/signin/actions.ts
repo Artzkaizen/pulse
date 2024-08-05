@@ -1,15 +1,15 @@
 "use server";
 
-import { z } from "zod";
-import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
-import { lucia } from "@/lib/auth";
 import { users } from "@/db/schema";
-import { cookies } from "next/headers";
-import { verify } from "@node-rs/argon2";
-import { redirect } from "next/navigation";
+import { lucia } from "@/lib/auth";
 import { authFormSchema } from "@/lib/utils";
+import { verify } from "@node-rs/argon2";
+import { eq } from "drizzle-orm";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
 const formSchema = authFormSchema("signin");
 
@@ -22,7 +22,6 @@ export const login = async (
     const existingUser = await db.query.users.findFirst({
       where: eq(users.username, username),
     });
-    console.log(existingUser);
     if (!existingUser || !existingUser.password) {
       return { error: "Incorrect user or password" };
     }

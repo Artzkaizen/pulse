@@ -1,6 +1,6 @@
 "use client";
 
-import { submitPost } from "@/components/posts/editor/actions";
+import { useCreatePostMutation } from "@/components/posts/editor/mutations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -21,16 +21,19 @@ const Createpost = () => {
     ],
     immediatelyRender: false,
   });
-
+  const mutation = useCreatePostMutation();
   const input =
     editor?.getText({
       blockSeparator: "\n",
     }) || "";
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await submitPost(input);
-    editor?.commands.clearContent();
+    mutation.mutate(input, {
+      onSuccess: () => {
+        editor?.commands.clearContent();
+      },
+    });
   };
   return (
     <section className="mt-2 w-full rounded-lg bg-secondary p-3">
@@ -44,8 +47,7 @@ const Createpost = () => {
               />
               <AvatarFallback>JM</AvatarFallback>
             </Avatar>
-            {/* <Input type="text" className="w-full rounded-md p-4" /> */}
-            <div className="flex max-h-52 overflow-auto w-full items-center justify-between rounded-lg border bg-background p-3 ring-2 ring-secondary focus-within:bg-primary-foreground focus-within:ring-primary">
+            <div className="flex max-h-52 overflow-auto w-full items-center justify-between rounded-lg border bg-background p-3 ring-2 ring-secondary focus-within:bg-transparent focus-within:ring-primary">
               <EditorContent editor={editor} />
               <Mic />
             </div>

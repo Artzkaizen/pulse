@@ -1,8 +1,8 @@
 "use server";
 
 import { lucia, validateRequest } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const logout = async () => {
   const { session } = await validateRequest();
@@ -10,7 +10,6 @@ export const logout = async () => {
     console.error("No session found. Unauthorized access.");
     throw new Error("Unauthorized");
   }
-  console.log("Invalidating session:", session.id);
   await lucia.invalidateSession(session.id);
 
   const sessionCookie = lucia.createBlankSessionCookie();

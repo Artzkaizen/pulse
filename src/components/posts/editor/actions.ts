@@ -10,8 +10,21 @@ export const submitPost = async (value: string) => {
   if (!session.user) throw new Error("Unauthorized");
 
   const { content } = createPostSchema.parse({ content: value });
-  await db.insert(posts).values({
-    content,
-    userId: session.user.id,
-  });
+  const [newpost] = await db
+    .insert(posts)
+    .values({
+      content,
+      userId: session.user.id,
+    })
+    .returning();
+
+  if (newpost) {
+    const postWithRelations = await db.query.posts.findFirst({
+      where: (posts, { eq }) => eq(posts.id, newpost.id),
+      with: {
+        user: true,
+      },
+    });
+    return postWithRelations;
+  }
 };

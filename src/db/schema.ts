@@ -13,7 +13,7 @@ export const users = pgTable("pulse_users", {
   bio: text("bio"),
   email: text("email").unique(),
   avatar: text("avatar").unique(),
-  username: text("username").unique(),
+  username: text("username").unique().notNull(),
   googleId: text("google_id").unique(),
   password: text("password"),
   displayName: text("display_name"),
@@ -31,13 +31,13 @@ export const sessions = pgTable("pulse_sessions", {
   }).notNull(),
 });
 export const posts = pgTable("pulse_posts", {
-  id: serial("id"),
+  id: serial("id").primaryKey().notNull(),
   content: text("content"),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
 
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const sessionForeignKeys = {
@@ -70,4 +70,5 @@ export type Post = typeof posts.$inferSelect;
 
 export type PostWithUser = Post & {
   user: User;
+  nextCursor?: number | null;
 };

@@ -1,8 +1,8 @@
+import NavBar from "@/components/NavBar";
+import RightSideBar from "@/components/RightSideBar";
 import { validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SessionProvider from "./SessionProvider";
-import NavBar from "@/components/NavBar";
-import RightSideBar from "@/components/RightSideBar";
 
 export default async function RootLayout({
   children,

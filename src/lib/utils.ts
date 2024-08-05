@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
+import { formatDate, formatDistanceToNowStrict } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -35,3 +35,24 @@ export const authFormSchema = (type: "signin" | "signup") =>
 export const createPostSchema = z.object({
   content: requiredString,
 });
+
+export const formatRelativeDate = (date: Date) => {
+  const now = new Date();
+  const diff = now.getTime() - new Date(date).getTime();
+  if (diff < 24 * 60 * 60 * 1000) {
+    return formatDistanceToNowStrict(date, { addSuffix: true });
+  } else {
+    if (date.getFullYear() === now.getFullYear()) {
+      return formatDate(date, "MMM d");
+    } else {
+      return formatDate(date, "MMM d, yyyy");
+    }
+  }
+};
+
+export function formatNumber(n: number): string {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(n);
+}

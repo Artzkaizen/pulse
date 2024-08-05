@@ -11,7 +11,7 @@ const NavBar = () => {
       <nav className="flex flex-col items-center justify-between border-r p-8">
         {/* <Image src="/assets/pulse.svg" alt="Logo" width={40} height={40} /> */}
         <div className="flex flex-col p-2">
-          {/* <UserDropDown user={user.displayName || ""} /> */}
+          <UserDropDown user={user.displayName || ""} />
           <Avatar className="mx-auto size-20">
             <AvatarImage src="https://github.com/sdshadcn.png" alt="@shadcn" />
             <AvatarFallback className="uppercase text-2xl font-medium">
@@ -178,12 +178,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getInitials } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 
 export function UserDropDown({ user }: { user: string }) {
   const { theme, setTheme } = useTheme();
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
+    queryClient.clear();
     logout();
   };
   const initials = getInitials(user);
