@@ -5,15 +5,12 @@ const NavBar = () => {
   const { user } = useSession();
 
   const initials = getInitials(user.displayName!);
-
   return (
-    <header className="h-screen w-1/4 overflow-auto">
-      <nav className="flex flex-col items-center justify-between border-r p-8">
-        {/* <Image src="/assets/pulse.svg" alt="Logo" width={40} height={40} /> */}
-        <div className="flex flex-col p-2">
-          <UserDropDown user={user.displayName || ""} />
+    <header className="relative h-screen w-2/4 overflow-auto border-r ">
+      <nav className="flex flex-col items-center justify-between">
+        <div className="flex flex-col p-2 ">
           <Avatar className="mx-auto size-20">
-            <AvatarImage src="https://github.com/sdshadcn.png" alt="@shadcn" />
+            <AvatarImage src={user.avatar || ""} alt={user.displayName || ""} />
             <AvatarFallback className="uppercase text-2xl font-medium">
               {initials}
             </AvatarFallback>
@@ -22,11 +19,11 @@ const NavBar = () => {
             {user.displayName}
           </h2>
           <p className="mx-auto">@{user.username}</p>
-          <p className="text-sm">
+          {/* <p className="text-sm">
             Guiding the next generation through the journey of health and
             knowledge!
-          </p>
-          <div className="flex items-center justify-around">
+          </p> */}
+          <div className="flex items-center space-x-4">
             <span className="">
               <p className="block text-center font-semibold">368</p>
               <span className="text-sm">Post</span>
@@ -42,7 +39,7 @@ const NavBar = () => {
           </div>
         </div>
         <hr className="h-1 w-full bg-foreground" />
-        <ul className="mr-auto flex w-full flex-col space-y-2 py-6">
+        <ul className="mr-auto flex w-full flex-col space-y-2 ">
           <li>
             <Button
               className="h-12 w-full justify-start bg-transparent text-accent-foreground hover:text-primary-foreground"
@@ -92,56 +89,62 @@ const NavBar = () => {
             </Button>
           </li>
         </ul>
-        <hr className="h-1 w-full bg-foreground" />
-        <div className="mb-4 flex w-full items-center justify-between">
-          <h3 className="text-xl font-semibold">Contacts</h3>
-          <p className="text-sm">View all</p>
-        </div>
-
         {/* Contacts section */}
-        <div className="flex w-full flex-col justify-start gap-4">
-          <div className="flex w-full items-center gap-4">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>JM</AvatarFallback>
-            </Avatar>
-            <span>
-              <h4 className="text-md font-semibold">Jack Monero</h4>
-              <p className="text-xs">Liked your story</p>
-            </span>
+
+        <div className="max-lg:hidden w-full">
+          <hr className="h-1 w-full bg-foreground" />
+          <div className="mb-4 flex w-full items-center justify-between">
+            <h3 className="text-xl font-semibold">Contacts</h3>
+            <p className="text-sm">View all</p>
           </div>
-          <div className="flex w-full items-center gap-4">
-            <Avatar>
-              <AvatarImage src="" alt="@shadcn" />
-              <AvatarFallback>CD</AvatarFallback>
-            </Avatar>
-            <span>
-              <h4 className="text-md font-semibold">Chris Dinner</h4>
-              <p className="text-xs">Liked your story</p>
-            </span>
-          </div>
-          <div className="flex w-full items-center gap-4">
-            <Avatar>
-              <AvatarImage src="" alt="@shadcn" />
-              <AvatarFallback>MS</AvatarFallback>
-            </Avatar>
-            <span>
-              <h4 className="text-md font-semibold">Martin Stilke</h4>
-              <p className="text-xs">Liked your story</p>
-            </span>
-          </div>
-          <div className="flex w-full items-center gap-4">
-            <Avatar>
-              <AvatarImage src="" alt="@shadcn" />
-              <AvatarFallback>RH</AvatarFallback>
-            </Avatar>
-            <span>
-              <h4 className="text-md font-semibold">Rick Hart</h4>
-              <p className="text-xs">Liked your story</p>
-            </span>
+          <div className="flex w-full flex-col justify-start gap-4 max-lg:hidden">
+            <div className="flex w-full items-center gap-4">
+              <Avatar>
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>JM</AvatarFallback>
+              </Avatar>
+              <span>
+                <h4 className="text-md font-semibold">Jack Monero</h4>
+                <p className="text-xs">Liked your story</p>
+              </span>
+            </div>
+            <div className="flex w-full items-center gap-4">
+              <Avatar>
+                <AvatarImage src="" alt="@shadcn" />
+                <AvatarFallback>CD</AvatarFallback>
+              </Avatar>
+              <span>
+                <h4 className="text-md font-semibold">Chris Dinner</h4>
+                <p className="text-xs">Liked your story</p>
+              </span>
+            </div>
+            {/* <div className="flex w-full items-center gap-4">
+              <Avatar>
+                <AvatarImage src="" alt="@shadcn" />
+                <AvatarFallback>MS</AvatarFallback>
+              </Avatar>
+              <span>
+                <h4 className="text-md font-semibold">Martin Stilke</h4>
+                <p className="text-xs">Liked your story</p>
+              </span>
+            </div>
+            <div className="flex w-full items-center gap-4">
+              <Avatar>
+                <AvatarImage src="" alt="@shadcn" />
+                <AvatarFallback>RH</AvatarFallback>
+              </Avatar>
+              <span>
+                <h4 className="text-md font-semibold">Rick Hart</h4>
+                <p className="text-xs">Liked your story</p>
+              </span>
+            </div> */}
           </div>
         </div>
       </nav>
+      <UserDropDown user={user.displayName || ""} avatar={user.avatar || ""} />
     </header>
   );
 };
@@ -152,11 +155,12 @@ import {
   HomeIcon,
   LifeBuoy,
   LogOut,
-  Mail,
   MessageSquare,
-  Monitor,
-  PlusCircle,
+  MonitorCog,
+  Moon,
   Settings,
+  Sun,
+  SunMoon,
   User,
 } from "lucide-react";
 
@@ -181,7 +185,13 @@ import { getInitials } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 
-export function UserDropDown({ user }: { user: string }) {
+export function UserDropDown({
+  user,
+  avatar,
+}: {
+  user: string;
+  avatar: string;
+}) {
   const { theme, setTheme } = useTheme();
   const queryClient = useQueryClient();
 
@@ -195,13 +205,15 @@ export function UserDropDown({ user }: { user: string }) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="rounded-full bg-green-200 p-0 hover:bg-transparent"
+          className="bottom-0 h-14 w-full justify-start rounded-none shadow-md bg-secondary p-0 absolute hover:bg-transparent"
         >
-          <Avatar>
+          <Avatar className="border size-12 border-primary">
+            <AvatarImage src={avatar || ""} alt={user} />
             <AvatarFallback className="font-medium uppercase">
               {initials}
             </AvatarFallback>
           </Avatar>
+          <span className="ml-2 text-md font-medium capitalize">{user}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -214,23 +226,23 @@ export function UserDropDown({ user }: { user: string }) {
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <Monitor className="mr-2 h-4 w-4" />
+              <MonitorCog className="mr-2 h-4 w-4" />
               <span>Theme</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem onClick={() => setTheme("light")}>
-                  <Mail className="mr-2 h-4 w-4" />
+                  <Sun className="mr-2 h-4 w-4" />
                   <span>Light</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  <MessageSquare className="mr-2 h-4 w-4" />
+                  <Moon className="mr-2 h-4 w-4" />
                   <span>Dark</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setTheme("system")}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  <span>System...</span>
+                  <SunMoon className="mr-2 h-4 w-4" />
+                  <span>System</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>

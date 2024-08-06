@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
     console.log(posts);
 
     const nextCursor = posts.length > page ? posts[page].id : null;
-    console.log("nextCursor", nextCursor);
 
     const data: RoutePost = {
       posts: posts,

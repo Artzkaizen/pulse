@@ -28,9 +28,6 @@ export const signUp = async (
     const existingUser = await db.query.users.findFirst({
       where: eq(users.username, username),
     });
-
-    console.log("Database connection successful");
-
     if (existingUser) return { error: "Username already exists" };
 
     if (email) {
@@ -39,10 +36,14 @@ export const signUp = async (
       });
       if (existingEmail) return { error: "Email already taken" };
     }
+
+    const avatarUrl = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+
     await db.insert(users).values({
       id: userId,
       username,
       email,
+      avatar: avatarUrl,
       password: passwordHash,
       displayName: username,
     });

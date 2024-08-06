@@ -25,8 +25,6 @@ const SuggestAccounts = async () => {
     count: Number(row.count),
   }));
 
-  console.log("hashtags", arr);
-
   return (
     <>
       {accounts.map((account) => {

@@ -9,7 +9,7 @@ import { LoadingSkeleton } from "./LoadingSekleton";
 
 function RightSideBar() {
   return (
-    <aside className="w-1/4 border-l-2">
+    <aside className="w-2/4 border-l-2 max-lg:hidden">
       <div className="flex flex-col gap-4 p-6">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Message</h3>

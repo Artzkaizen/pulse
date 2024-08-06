@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Createpost from "./CreatePost";
-import FetchPosts from "./PostFeed";
+import PostFeed from "./PostFeed";
 
 export default async function Home() {
   return (
-    <section className="h-screen w-2/4 overflow-auto bg-card p-6">
+    <section className="h-screen w-full overflow-auto bg-card p-6">
       <div className="flex space-x-4">
         <div className="flex flex-col items-center justify-center">
           <Avatar className="size-14 border-2 border-dashed border-purple-500 bg-transparent">
@@ -44,7 +44,8 @@ export default async function Home() {
       </div>
       <div className="bg-green-200"></div>
       <Createpost />
-      <FetchPosts />
+      <hr className="h-[2px] w-full bg-foreground my-3 " />
+      <PostFeed />
     </section>
   );
 }

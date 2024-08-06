@@ -1,7 +1,7 @@
-import { cache } from "react";
 import { adapter } from "@/db/drizzle";
-import { cookies } from "next/headers";
 import { Lucia, Session, User } from "lucia";
+import { cookies } from "next/headers";
+import { cache } from "react";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -61,7 +61,7 @@ export const validateRequest = cache(
         );
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     return result;
