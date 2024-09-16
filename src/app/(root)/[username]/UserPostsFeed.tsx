@@ -23,7 +23,7 @@ const UserPostsFeed = ({ userId }: { userId: string }) => {
   return (
     <div className="flex flex-col space-y-4 w-full *:text-black">
       {posts.map((post) => (
-        <PostCard post={post} />
+        <PostCard key={post.id} post={post} />
       ))}
     </div>
   );

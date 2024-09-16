@@ -23,7 +23,7 @@ export interface UserWithPosts {
   followers: Follows[];
   following: Follows[];
 }
-export const getUser = cache(async (username: string, userId: string) => {
+const getUser = cache(async (username: string, userId: string) => {
   const user = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users?.username, username),
     with: {
@@ -111,7 +111,7 @@ const page = async ({ params: { username } }: ProfilePageProps) => {
 
       <div className="space-y-4">
         {user.posts.map((post) => (
-          <PostCard user={user} post={post} />
+          <PostCard key={post.id} user={user} post={post} />
         ))}
       </div>
     </section>
