@@ -15,7 +15,7 @@ const formSchema = authFormSchema("signin");
 
 export const login = async (
   credentials: z.infer<typeof formSchema>,
-): Promise<{ error: string }> => {
+): Promise<{ error: string | null }> => {
   try {
     const { username, password } = formSchema.parse(credentials);
 
@@ -25,12 +25,12 @@ export const login = async (
     if (!existingUser || !existingUser.password) {
       return { error: "Incorrect user or password" };
     }
-    const isVaildPassword = await verify(existingUser.password, password, {
+    const isValidPassword = await verify(existingUser.password, password, {
       memoryCost: 19456,
       timeCost: 2,
       parallelism: 1,
     });
-    if (!isVaildPassword) {
+    if (!isValidPassword) {
       return { error: "Incorrect user or password" };
     }
     const session = await lucia.createSession(existingUser.id, {});
@@ -40,11 +40,10 @@ export const login = async (
       sessionCookie.value,
       sessionCookie.attributes,
     );
-    return redirect("/");
   } catch (error) {
     console.error(error);
     if (isRedirectError(error)) throw error;
-
     return { error: "Something went wrong" };
   }
+  return redirect("/");
 };

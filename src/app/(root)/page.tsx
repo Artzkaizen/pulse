@@ -4,7 +4,7 @@ import PostFeed from "./PostFeed";
 
 export default async function Home() {
   return (
-    <section className="h-screen w-full overflow-auto bg-card p-6">
+    <section className="h-screen w-full overflow-auto p-6">
       <div className="flex space-x-4">
         <div className="flex flex-col items-center justify-center">
           <Avatar className="size-14 border-2 border-dashed border-purple-500 bg-transparent">

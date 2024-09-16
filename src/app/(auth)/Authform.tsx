@@ -19,7 +19,7 @@ const AuthForm = ({ type }: { type: "signin" | "signup" }) => {
   const [error, setError] = useState<string>();
 
   const [isPending, startTransition] = useTransition();
-  const [isLoading, setIsLoading] = useState(false);
+
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
 
   const togglePassword = () => {
@@ -36,19 +36,12 @@ const AuthForm = ({ type }: { type: "signin" | "signup" }) => {
   });
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     setError(undefined);
-    setIsLoading(true);
     startTransition(async () => {
-      try {
-        const { error } =
-          type === "signup" ? await signUp(values) : await login(values);
-        if (error) setError(error);
-      } catch (error) {
-        setError("An unexpected error occurred");
-      } finally {
-        setIsLoading(false);
-      }
+      const { error } =
+        type === "signup" ? await signUp(values) : await login(values);
+      if (error) setError(error);
     });
-    setIsLoading(false);
+    await new Promise((r) => setTimeout((r) => r, 1000));
   };
 
   return (
@@ -99,12 +92,45 @@ const AuthForm = ({ type }: { type: "signin" | "signup" }) => {
             />
             {type === "signup" && (
               <>
-                <CustomFormField
-                  label="Email"
-                  control={form.control}
-                  name="email"
-                  placeholder="Enter your email"
-                />
+                <div className="flex w-full flex-wrap justify-between">
+                  <CustomFormField
+                    label="Firstname"
+                    control={form.control}
+                    name="firstname"
+                    placeholder="Enter your email"
+                  />
+                  <CustomFormField
+                    label="Lastname"
+                    control={form.control}
+                    name="lastname"
+                    placeholder="Enter your email"
+                  />
+                </div>
+                {/* <div className="flex">
+                  <CustomFormField
+                    label="Email"
+                    control={form.control}
+                    name="email"
+                    placeholder="Enter your email"
+                  />
+                  <SelectGenderField
+                    className="w-full bg-secondary"
+                    label="Gender"
+                    options={[
+                      {
+                        value: "boy",
+                        name: "Male",
+                      },
+                      {
+                        value: "girl",
+                        name: "Girl",
+                      },
+                    ]}
+                    name="gender"
+                    control={form.control}
+                    placeholder="Select gender"
+                  />
+                </div> */}
               </>
             )}
 
@@ -127,11 +153,11 @@ const AuthForm = ({ type }: { type: "signin" | "signup" }) => {
 
             <div className="flex flex-col gap-4">
               <Button
-                disabled={isLoading}
+                disabled={isPending}
                 type="submit"
                 className="form-btn h-14 border-primary"
               >
-                {isLoading ? (
+                {isPending ? (
                   <>
                     <Loader2 size={20} className="animate-spin" /> &nbsp;
                     Loading....

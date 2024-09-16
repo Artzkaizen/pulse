@@ -3,18 +3,24 @@ import { PostWithUser } from "@/db/schema";
 import { validateRequest } from "@/lib/auth";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params: { userId } }: { params: { userId: string } },
+) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const { user } = await validateRequest();
-    const page = 2;''
+    const page = 2;
     if (!user) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     const posts: any = await db.query.posts.findMany({
-      where: (posts, { lt }) =>
-        cursor ? lt(posts.id, parseInt(cursor, 10)) : undefined,
+      where: (posts, { eq, lt }) => {
+        if (cursor) {
+          return lt(posts.id, parseInt(cursor, 10));
+        }
+        return eq(posts.userId, userId);
+      },
       orderBy: (posts, { desc }) => [desc(posts.createdAt)],
       with: {
         user: true,
@@ -23,7 +29,6 @@ export async function GET(req: NextRequest) {
     });
 
     const nextCursor = posts.length > page ? posts[page].id : null;
-
     const data: RoutePost = {
       posts: posts,
       nextCursor,

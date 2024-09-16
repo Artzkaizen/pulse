@@ -16,8 +16,9 @@ export const users = pgTable("pulse_users", {
   username: text("username").unique().notNull(),
   googleId: text("google_id").unique(),
   password: text("password"),
+  gender: text("gender"),
   displayName: text("display_name"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const sessions = pgTable("pulse_sessions", {
@@ -57,13 +58,15 @@ export const follows = pgTable(
     };
   },
 );
-
+export type Follow = typeof follows.$inferSelect;
 export const sessionForeignKeys = {
   userId: foreignKey({ columns: [users.id], foreignColumns: [users.id] }),
 };
 
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  following: many(follows, { relationName: "following" }),
+  followers: many(follows, { relationName: "followers" }),
   sessions: many(sessions),
 }));
 
@@ -81,10 +84,24 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   }),
 }));
 
+export const followsRelations = relations(follows, ({ one }) => ({
+  follower: one(users, {
+    relationName: "followers",
+    fields: [follows.followingId],
+    references: [users.id],
+  }),
+  following: one(users, {
+    relationName: "following",
+    fields: [follows.followerId],
+    references: [users.id],
+  }),
+}));
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 export type Post = typeof posts.$inferSelect;
+export type Follows = typeof follows.$inferSelect;
 
 export type PostWithUser = Post & {
   user: User;

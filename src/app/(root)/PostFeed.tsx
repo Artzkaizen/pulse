@@ -8,8 +8,9 @@ import { kyInstance } from "@/lib/ky";
 import { formatRelativeDate, getInitials } from "@/lib/utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { RoutePost } from "../api/posts/route";
 import PopoverActions from "./PopoverActions";
-
+import { UserWithPosts } from "./[username]/page";
 const PostLoading = () => {
   return (
     <div className="flex flex-col space-y-4 mt-6">
@@ -37,16 +38,56 @@ const PostLoading = () => {
   );
 };
 
+export const PostCard = ({
+  user,
+  post,
+}: {
+  user?: UserWithPosts;
+  post: PostWithUser;
+}) => {
+  const initials = getInitials(
+    user ? user.displayName : post?.user.displayName || "",
+  );
+  const date = formatRelativeDate(post?.createdAt);
+  return (
+    <article
+      key={post.id}
+      className="relative rounded-lg bg-secondary p-4 shadow-md group"
+    >
+      <div className="flex flex-col  justify-between">
+        <div className="flex  gap-2">
+          <Avatar className="size-14 border-2 border-purple-400">
+            <AvatarImage
+              src={user ? user.avatar : post.user.avatar || ""}
+              alt={user ? user.username : post.user.username}
+            />
+            <AvatarFallback className="uppercase">{initials}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col items-start justify-center">
+            <Link
+              href={`/${user ? user.username : post.user.username}`}
+              className="text-sm font-semibold capitalize"
+            >
+              {user ? user.displayName : post.user.displayName}
+            </Link>
+            <span className="text-sm text-gray-500">{date}</span>
+          </div>
+          <PopoverActions post={post} />
+        </div>
+        <p>{post.content}</p>
+      </div>
+    </article>
+  );
+};
+
 const FetchPosts = () => {
   const query = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: async ({ pageParam }) => {
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
-
       const response = await kyInstance.get("/api/posts", {
         searchParams: pageParam ? { cursor: pageParam } : {},
       });
-      return response.json<PostWithUser>();
+      return response.json<RoutePost>();
     },
     initialPageParam: null as number | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -64,42 +105,9 @@ const FetchPosts = () => {
         query.hasNextPage && !query.isFetchingNextPage && query.fetchNextPage()
       }
     >
-      {posts.map((post: PostWithUser) => {
-        const initials = getInitials(post?.user.displayName!);
-        const date = formatRelativeDate(post?.createdAt);
-        return (
-          <article
-            key={post.id}
-            className="relative rounded-lg bg-secondary p-4 shadow-md group"
-          >
-            <div className="flex flex-col  justify-between">
-              <div className="flex  gap-2">
-                <Avatar className="size-14 border-2 border-purple-400">
-                  <AvatarImage
-                    src={post.user.avatar || ""}
-                    alt={post.user.username}
-                  />
-                  <AvatarFallback className="uppercase">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col items-start justify-center">
-                  <Link
-                    href={`/user/${post.user.username}`}
-                    className="text-sm font-semibold capitalize"
-                  >
-                    {post.user.displayName}
-                  </Link>
-                  <span className="text-sm text-gray-500">{date}</span>
-                </div>
-                <PopoverActions post={post} />
-              </div>
-              <p>{post.content}</p>
-              {/* <div>#endregion #endregion #region</div> */}
-            </div>
-          </article>
-        );
-      })}
+      {posts.map((post: PostWithUser) => (
+        <PostCard key={post.id} post={post} />
+      ))}
       {query.isFetchingNextPage && (
         <LoadingSkeleton
           pluse="bg-background"

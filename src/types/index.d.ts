@@ -8,4 +8,16 @@ declare interface CustomFormFieldProps {
   label: string;
   isPasswordVisible?: boolean;
 }
-``;
+
+interface GenderOptions {
+  value: string;
+  name: string;
+}
+declare interface SelectGenderFieldProps {
+  name: string;
+  label: string;
+  options: GenderOptions[];
+  control: Control<z.infer<typeof formSchema>>;
+  placeholder: string;
+  className: string;
+}

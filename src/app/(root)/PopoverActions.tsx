@@ -20,6 +20,7 @@ import { PostWithUser } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Ellipsis, Trash, User } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { useSession } from "./SessionProvider";
 
@@ -44,9 +45,11 @@ export default function PopoverActions({ post }: { post: PostWithUser }) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="flex flex-col w-fit justify-start px-0 py-1">
-          <Button variant="ghost">
-            <User className="mr-1 h-4 w-4" />
-            View Profile
+          <Button asChild variant="ghost">
+            <Link href={`/${user.username || post.user.username}`}>
+              <User className="mr-1 h-4 w-4" />
+              View Profile
+            </Link>
           </Button>
           <Separator className="-mx-1 my-1 h-px bg-muted" />
           <AlertDialogTrigger asChild>

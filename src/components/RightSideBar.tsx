@@ -1,11 +1,10 @@
 import SuggestAccounts from "@/app/(root)/SuggestAccount";
 import { Edit, MessageCircle, Mic, Search } from "lucide-react";
 import { Suspense } from "react";
+import { LoadingSkeleton } from "./LoadingSekleton";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-
-import { LoadingSkeleton } from "./LoadingSekleton";
 
 function RightSideBar() {
   return (

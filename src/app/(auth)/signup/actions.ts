@@ -17,7 +17,8 @@ export const signUp = async (
   credentials: z.infer<typeof formSchema>,
 ): Promise<{ error: string }> => {
   try {
-    const { username, email, password } = formSchema.parse(credentials);
+    const { username, email, password, firstname, lastname } =
+      formSchema.parse(credentials);
     const passwordHash = await hash(password, {
       memoryCost: 19456,
       timeCost: 2,
@@ -43,9 +44,10 @@ export const signUp = async (
       id: userId,
       username,
       email,
+      gender: "male",
       avatar: avatarUrl,
       password: passwordHash,
-      displayName: username,
+      displayName: `${firstname} ${lastname}`,
     });
 
     const createdUser = await db.query.users.findFirst({

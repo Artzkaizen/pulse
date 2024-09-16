@@ -26,6 +26,9 @@ export const authFormSchema = (type: "signin" | "signup") =>
             message: "Must be a valiid email eg. demo@demo.com",
           })
         : z.string().optional(),
+    firstname: type === "signup" ? requiredString : z.string().optional(),
+    gender: type === "signup" ? requiredString : z.string().optional(),
+    lastname: type === "signup" ? requiredString : z.string().optional(),
     password: requiredString.min(
       8,
       "Password must be at least 8 characters long",
@@ -35,6 +38,13 @@ export const authFormSchema = (type: "signin" | "signup") =>
 export const createPostSchema = z.object({
   content: requiredString,
 });
+
+export const capitalizeWords = (str: string) => {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
 
 export const formatRelativeDate = (date: Date) => {
   const now = new Date();
